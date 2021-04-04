@@ -7,11 +7,22 @@ import Team from "./components/Teams/Team";
 function App() {
   const [users, setUsers] = useState([]);
   const [team, setTeam] = useState([]);
-  useEffect(() => {
-    fetch("https://randomuser.me/api/?results=100")
-      .then(response => response.json())
-      .then(data => setUsers(data.results));
-    console.log(users);
+  // useEffect(() => {
+  //   fetch("https://randomuser.me/api/?results=100")
+  //     .then(response => response.json())
+  //     .then(data => setUsers(data.results));
+  //   console.log(users);
+  // }, []);
+  useEffect(async () => {
+    try {
+      const res = await fetch("https://randomuser.me/api/?results=100");
+      const response = await res.json();
+      setUsers(response.results);
+    } catch (e) {
+      console.log('error message:',e.message);
+    }
+
+    // console.log(users);
   }, []);
 
   const addTeamMember = user => {
