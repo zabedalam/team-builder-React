@@ -22,7 +22,7 @@ const Users = props => {
   return (
     <>
       <CardDeck>
-        <Card>
+        <Card className="mt-3">
           <CardImg top width="100%" src={picture.large} alt="Card image cap" />
           <CardBody>
             <CardTitle tag="h5">{fullName}</CardTitle>
