@@ -1,24 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Container, Row, Col } from "reactstrap";
+import Users from "./components/Users/Users";
+import Team from "./components/Teams/Team";
 
 function App() {
+  const [users, setUsers] = useState([]);
+  const [team, setTeam] = useState([]);
+  useEffect(() => {
+    fetch("https://randomuser.me/api/?results=100")
+      .then(response => response.json())
+      .then(data => setUsers(data.results));
+    console.log(users);
+  }, []);
+
+  const addTeamMember = user => {
+    if (team.length > 0 && team.find(t => user.id === t.id)) {
+      alert("User Already Added");
+    } else {
+      const newTeamMember = [...team, user];
+      setTeam(newTeamMember);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <h1>Selected Team Members:{team.length}</h1>
+      <Row>
+        {team.map(team => (
+          <Col md="3">
+            <Team team={team}></Team>
+          </Col>
+        ))}
+      </Row>
+      <hr />
+      <Container>
+        <h2>Total Members:{users.length}</h2>
+        <Row>
+          {users.map(user => (
+            <Col md="3">
+              <Users user={user} addTeamMember={addTeamMember}></Users>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </Container>
   );
 }
 
